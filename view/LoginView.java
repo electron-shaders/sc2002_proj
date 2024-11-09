@@ -123,7 +123,7 @@ public class LoginView implements IView{
                 PharmacistView pharmacistView = new PharmacistView(user);
                 pharmacistView.launch();
                 break;
-            case ADMINISTRATOR:
+            case UserRole.ADMINISTRATOR:
                 AdministratorView administratorView = new AdministratorView(user);
                 administratorView.launch();
                 break;
