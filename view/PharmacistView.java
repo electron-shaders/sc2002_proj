@@ -74,7 +74,7 @@ public class PharmacistView extends DashboardView{
         System.out.println("Notes: " + record.getNotes());
         System.out.println("--------------------");
         System.out.println("Prescriptions: ");
-        if(record.getPrescriptions.isEmpty()){
+        if(record.getPrescriptions().isEmpty()){
             System.out.println("  (Empty)");
         }
         for (String prescription : record.getPrescriptions()) {
