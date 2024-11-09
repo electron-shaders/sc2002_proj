@@ -41,8 +41,14 @@ public class AdministratorController {
         }
     }
     public List<User> searchStaff(int age){
-        List<User> StaffList = StaffStore.getRecords();
         List<User> Result = new ArrayList<User>(); 
+        List<User> DoctorList = DoctorStore.getRecords();
+        for(User user : DoctorList) {
+            if(user.getAge() == age){
+                Result.add(user);
+            }
+        }
+        List<User> StaffList = StaffStore.getRecords();
         for(User user : StaffList) {
             if(user.getAge() == age){
                 Result.add(user);
@@ -51,8 +57,14 @@ public class AdministratorController {
         return Result;
     }
     public List<User> searchStaff(boolean isMale){
-        List<User> StaffList = StaffStore.getRecords();
         List<User> Result = new ArrayList<User>(); 
+        List<User> DoctorList = DoctorStore.getRecords();
+        for(User user : DoctorList) {
+            if(user.getIsMale() == isMale){
+                Result.add(user);
+            }
+        }
+        List<User> StaffList = StaffStore.getRecords();
         for(User user : StaffList) {
             if(user.getIsMale() == isMale){
                 Result.add(user);
@@ -61,8 +73,14 @@ public class AdministratorController {
         return Result;
     }
     public List<User> searchStaff(String name){
-        List<User> StaffList = StaffStore.getRecords();
         List<User> Result = new ArrayList<User>(); 
+        List<User> DoctorList = DoctorStore.getRecords();
+        for(User user : DoctorList) {
+            if(name.equalsIgnoreCase(user.getName())){
+                Result.add(user);
+            }
+        }
+        List<User> StaffList = StaffStore.getRecords();
         for(User user : StaffList) {
             if(name.equalsIgnoreCase(user.getName())){
                 Result.add(user);

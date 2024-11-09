@@ -20,17 +20,19 @@ public class PharmacistController {
         if(prescriptionIdx < 0 || prescriptionIdx >= prescription.length){
             throw new Exception("Invalid prescription Id.");
         }
-        prescription.get(prescriptionIdx).setStatus(PrescriptionStatus.DISPENSED);
+        Medicine medicine = prescription.get(prescriptionIdx);
+        medicine.setStock(medicine.getStock() - 1);
+        medicine.setStatus(PrescriptionStatus.DISPENSED);
     }
     public List<Medicine> getMedicineInventory(){
         return MedicineStore.getRecords();
     }
     public void submitReplenishmentRequest(String medicinedId){
         Medicine medicine = MedicineStore.getRecord(medicinedId);
-        if(medicine != null){
+        if(medicine != null && medicine.getStock() <= medicine.getLowStockThreshold()){
             medicine.setIsRequestingReplenishment(true);
             return;
         }
-        throw new Exception("Medicine is not found.");
+        throw new Exception("Cannot sumbmit medicine replenishment request.");
     }
 }
