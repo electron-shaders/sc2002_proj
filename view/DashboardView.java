@@ -82,7 +82,7 @@ abstract class DashboardView implements IView{
             System.out.print("Please enter your new password again to confirm: ");
             check = sc.nextLine();
 
-            if(newPassword == check){
+            if(newPassword.equals(check)){
                 break;
             }
             else{
