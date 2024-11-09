@@ -73,7 +73,7 @@ public class PharmacistView extends DashboardView{
         System.out.println("Service type: " + record.getServiceType());
         System.out.println("Notes: " + record.getNotes());
         System.out.println("--------------------");
-        System.out.println("Prescriptions: " + record.getServiceType());
+        System.out.println("Prescriptions: ");
         if(record.getPrescriptions.isEmpty()){
             System.out.println("  (Empty)");
         }
