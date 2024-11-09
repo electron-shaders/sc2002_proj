@@ -73,21 +73,18 @@ public class LoginView implements IView{
     public boolean authenticate(UserRole userRole, String userId, String password){
         switch(userRole){
             case PATIENT:
-            user = PatientStore.getRecord(userId);
-            break;
-
+                user = PatientStore.getRecord(userId);
+                break;
             case DOCTOR:
-            user = DoctorStore.getRecord(userId);
-            break;
-
+                user = DoctorStore.getRecord(userId);
+                break;
             case PHARMACIST:
             case ADMINISTRATOR:
-            user = StaffStore.getRecord(userId);
-            break;
-
+                user = StaffStore.getRecord(userId);
+                break;
             default:
-            showError("Unable to find role specific Store class. Update to authenticate() in LoginView.java may be required.");
-            return false;
+                showError("Unable to find role specific Store class. Update to authenticate() in LoginView.java may be required.");
+                return false;
         }
 
         //Check userID
@@ -115,29 +112,25 @@ public class LoginView implements IView{
         userRole = user.getRole();
         switch(userRole){
             case PATIENT:
-            PatientView patientView = new PatientView(user);
-            patientView.launch();
-            break;
-
+                PatientView patientView = new PatientView(user);
+                patientView.launch();
+                break;
             case DOCTOR:
-            DoctorView doctorView = new DoctorView(user);
-            doctorView.launch();
-            break;
-
+                DoctorView doctorView = new DoctorView(user);
+                doctorView.launch();
+                break;
             case PHARMACIST:
-            PharmacistView pharmacistView = new PharmacistView(user);
-            pharmacistView.launch();
-            break;
-
+                PharmacistView pharmacistView = new PharmacistView(user);
+                pharmacistView.launch();
+                break;
             case ADMINISTRATOR:
-            AdministratorView administratorView = new AdministratorView(user);
-            administratorView.launch();
-            break;
-
+                AdministratorView administratorView = new AdministratorView(user);
+                administratorView.launch();
+                break;
             default:
-            showError("Unable to find role specific View class. Update to navigateToDashboard() in LoginView.java may be required.");
-            loginSuccess = false;
-            launch();
+                showError("Unable to find role specific View class. Update to navigateToDashboard() in LoginView.java may be required.");
+                loginSuccess = false;
+                launch();
         }
     }
 }
