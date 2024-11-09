@@ -1,4 +1,31 @@
+package view;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import model.User;
+
 abstract class DashboardView implements IView{
+    public int getChoice(int min, int max) {
+        int choice = 0;
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            try {
+                System.out.print("Please enter your choice (" + min + " - " + max + "): ");
+                choice = sc.nextInt();
+                if (choice >= min && choice <= max) {
+                    break;
+                }
+                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+                System.out.println();
+            } catch (InputMismatchException e) {
+                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+                System.out.println();
+            }
+        }
+        return choice;
+    }
+
     public void showNotifications(String[] notifications){
         System.out.println("------------------------------------------------------------------------------------------------------");
         System.out.println("NOTIFICATIONS: ");
@@ -44,5 +71,31 @@ abstract class DashboardView implements IView{
         System.out.println("------------------------------------------------------------------------------------------------------");
         System.out.println("[ERROR]: " + message);
         System.out.println("------------------------------------------------------------------------------------------------------");
+    }
+
+    public void showChangePasswordForm(User user){
+        Scanner sc = new Scanner(System.in);
+        String newPassword, check;
+        while(true){
+            System.out.print("Please enter your new password: ");
+            newPassword = sc.nextLine();
+            System.out.print("Please enter your new password again to confirm: ");
+            check = sc.nextLine();
+
+            if(newPassword == check){
+                break;
+            }
+            else{
+                showError("Passwords do not match. Please try again.");
+            }
+        }
+
+        try{
+            user.changePassword(newPassword);
+            showSuccess("Password changed successfully");
+        }catch (Exception e){
+            showError(e.getMessage());
+        }
+        
     }
 }
