@@ -111,7 +111,7 @@ public class LoginView implements IView{
     public void navigateToDashboard(User user){
         userRole = user.getRole();
         switch(userRole){
-            case PATIENT:
+            case UserRole.PATIENT:
                 PatientView patientView = new PatientView(user);
                 patientView.launch();
                 break;
