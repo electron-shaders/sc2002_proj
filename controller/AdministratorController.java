@@ -13,7 +13,7 @@ public class AdministratorController {
             throw new Exception("Invalid Staff.");
         }
         else if(role == UserRole.DOCTIOR){
-            return DoctorStore.addRecord(user);
+            return DoctorStore.addRecord((Doctor)user);
         }
         else if(role == UserRole.PHARMACIST){
             return StaffStore.addRecord(user);
