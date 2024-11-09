@@ -72,7 +72,7 @@ public class AdministratorController {
     }
     public void updateStaff(String userId, User user){
         if(user.getRole() == UserRole.DOCTOR){
-            DoctorStore.updateRecord(userId, user);
+            DoctorStore.updateRecord(userId, (Doctor)user);
         }
         else if(user.getRole() == UserRole.PHARMACIST){
             StaffStore.updateRecord(userId, user);
