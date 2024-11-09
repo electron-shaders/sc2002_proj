@@ -1,3 +1,5 @@
+package controller;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import store.MedicineStore;
 import store.StaffStore;
 
 public class AdministratorController {
-    public String addStaff(User user){
+    public static String addStaff(User user){
         UserRole role = user.getRole();
         if(role == UserRole.PATIENT){
             throw new Exception("Invalid Staff.");
@@ -22,7 +24,7 @@ public class AdministratorController {
             throw new Exception("Invalid Staff.");
         }
     }
-    public List<User> searchStaff(UserRole role){
+    public static List<User> searchStaff(UserRole role){
         if(role == UserRole.DOCTOR){
             return DoctorStore.getRecords();
         }
@@ -40,7 +42,7 @@ public class AdministratorController {
             throw new Exception("Invalid Role.");
         }
     }
-    public List<User> searchStaff(int age){
+    public static List<User> searchStaff(int age){
         List<User> Result = new ArrayList<User>(); 
         List<User> DoctorList = DoctorStore.getRecords();
         for(User user : DoctorList) {
@@ -56,7 +58,7 @@ public class AdministratorController {
         }
         return Result;
     }
-    public List<User> searchStaff(boolean isMale){
+    public static List<User> searchStaff(boolean isMale){
         List<User> Result = new ArrayList<User>(); 
         List<User> DoctorList = DoctorStore.getRecords();
         for(User user : DoctorList) {
@@ -72,7 +74,7 @@ public class AdministratorController {
         }
         return Result;
     }
-    public List<User> searchStaff(String name){
+    public static List<User> searchStaff(String name){
         List<User> Result = new ArrayList<User>(); 
         List<User> DoctorList = DoctorStore.getRecords();
         for(User user : DoctorList) {
@@ -88,7 +90,7 @@ public class AdministratorController {
         }
         return Result;
     }
-    public void updateStaff(String userId, User user){
+    public static void updateStaff(String userId, User user){
         if(user.getRole() == UserRole.DOCTOR){
             DoctorStore.updateRecord(userId, (Doctor)user);
         }
@@ -99,7 +101,7 @@ public class AdministratorController {
             throw new Exception("Staff Not Found.");
         }
     }
-    public void removeStaff(String userId){
+    public static void removeStaff(String userId){
         User user = DoctorStore.getRecord(userId);
         if(user != null){
             DoctorStore.removeRecord(userId);
@@ -112,23 +114,23 @@ public class AdministratorController {
         }
         throw new Exception("Staff Not Found.");
     }
-    public List<Appointment> getAppointments(){
+    public static List<Appointment> getAppointments(){
         return AppointmentStore.getRecords();
     }
-    public List<Medicine> getMedicineInventory(){
+    public static List<Medicine> getMedicineInventory(){
         return MedicineStore.getRecords();
     }
-    public String addMedicine(Medicine medicine){
+    public static String addMedicine(Medicine medicine){
         return MedicineStore.addRecord(medicine);
     }
-    public void removeMedicine(String medicineId){
+    public static void removeMedicine(String medicineId){
         if(MedicineStore.getRecord(medicineId) != null ){
             MedicineStore.removeRecord(medicineId);
             return;
         }
         throw new Exception("Medicine Not Found.");
     }
-    public void updateMedicineStockLevel(String medicineId, int stockLevel){
+    public static void updateMedicineStockLevel(String medicineId, int stockLevel){
         Medicine medicine = MedicineStore.getRecord(medicineId);
         if(medicine != null){
             medicine.setStock(stockLevel);
@@ -136,7 +138,7 @@ public class AdministratorController {
         }
         throw new Exception("Medicine Not Found.");
     }
-    public void updateMedicineLowStockThreshold(String medicineId, int threshold){
+    public static void updateMedicineLowStockThreshold(String medicineId, int threshold){
         Medicine medicine = MedicineStore.getRecord(medicineId);
         if(medicine != null){
             medicine.setLowStockThreshold(threshold);
@@ -144,7 +146,7 @@ public class AdministratorController {
         }
         throw new Exception("Medicine Not Found.");
     }
-    public void approveReplenishmentRequest(String medicineId){
+    public static void approveReplenishmentRequest(String medicineId){
         Medicine medicine = MedicineStore.getRecord(medicineId);
         if(medicine != null){
             medicine.setStock(medicine.getStock() + medicine.getLowStockThreshold());

@@ -1,31 +1,12 @@
 package view;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import model.User;
 
 abstract class DashboardView implements IView{
-    public int getChoice(int min, int max) {
-        int choice = 0;
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            try {
-                System.out.print("Please enter your choice (" + min + " - " + max + "): ");
-                choice = sc.nextInt();
-                if (choice >= min && choice <= max) {
-                    break;
-                }
-                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
-                System.out.println();
-            } catch (InputMismatchException e) {
-                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
-                System.out.println();
-            }
-        }
-        return choice;
-    }
-
     public void showNotifications(String[] notifications){
         System.out.println("------------------------------------------------------------------------------------------------------");
         System.out.println("NOTIFICATIONS: ");
@@ -44,7 +25,7 @@ abstract class DashboardView implements IView{
         System.out.println("------------------------------------------------------------------------------------------------------");
     }
 
-    public void showUserTips(String[] tips){
+    public void showUserTips(List<String> tips){
         System.out.println("------------------------------------------------------------------------------------------------------");
         System.out.println("TIPS: ");
         int count = 1;
