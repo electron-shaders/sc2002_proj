@@ -3,6 +3,7 @@ package view;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import model.UserRole;
 import store.PatientStore;
 import store.DoctorStore;
 import store.StaffStore;
@@ -51,7 +52,7 @@ public class LoginView implements IView{
             System.out.println("User roles:");
             int count = 1;
             for(UserRole role : UserRole.values()){
-                System.out.println(count + ": " + role);
+                System.out.println(count + ". " + role);
                 count++;
             }
             int choice = getChoice(1, numOfRoles);
