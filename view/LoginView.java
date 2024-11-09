@@ -72,14 +72,14 @@ public class LoginView implements IView{
 
     public boolean authenticate(UserRole userRole, String userId, String password){
         switch(userRole){
-            case PATIENT:
+            case UserRole.PATIENT:
                 user = PatientStore.getRecord(userId);
                 break;
-            case DOCTOR:
+            case UserRole.DOCTOR:
                 user = DoctorStore.getRecord(userId);
                 break;
-            case PHARMACIST:
-            case ADMINISTRATOR:
+            case UserRole.PHARMACIST:
+            case UserRole.ADMINISTRATOR:
                 user = StaffStore.getRecord(userId);
                 break;
             default:
@@ -111,19 +111,19 @@ public class LoginView implements IView{
     public void navigateToDashboard(User user){
         userRole = user.getRole();
         switch(userRole){
-            case PATIENT:
+            case UserRole.PATIENT:
                 PatientView patientView = new PatientView(user);
                 patientView.launch();
                 break;
-            case DOCTOR:
+            case UserRole.DOCTOR:
                 DoctorView doctorView = new DoctorView(user);
                 doctorView.launch();
                 break;
-            case PHARMACIST:
+            case UserRole.PHARMACIST:
                 PharmacistView pharmacistView = new PharmacistView(user);
                 pharmacistView.launch();
                 break;
-            case ADMINISTRATOR:
+            case UserRole.ADMINISTRATOR:
                 AdministratorView administratorView = new AdministratorView(user);
                 administratorView.launch();
                 break;

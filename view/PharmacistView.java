@@ -73,12 +73,12 @@ public class PharmacistView extends DashboardView{
         System.out.println("Service type: " + record.getServiceType());
         System.out.println("Notes: " + record.getNotes());
         System.out.println("--------------------");
-        System.out.println("Prescriptions: " + record.getServiceType());
-        if(record.getPrescriptions.isEmpty()){
+        System.out.println("Prescriptions: ");
+        if(record.getPrescriptions().isEmpty()){
             System.out.println("  (Empty)");
         }
-        for (String prescription : record.getPrescriptions()) {
-            System.out.println("- " + prescription);
+        for (Prescription prescription : record.getPrescriptions()) {
+            System.out.println("- " + pescription.getMedicine().getName() + "  (" + prescription.getStatus() + ")");
         }
         System.out.println();
     }
@@ -90,7 +90,7 @@ public class PharmacistView extends DashboardView{
         String appointmentOutcomeRecordId = sc.nextLine();
         AppointmentOutcomeRecord record = PharmacistController.getAppointmentOutcomeRecord(appointmentOutcomeRecordId);
 
-        if(record.getPrescriptions.isEmpty()){
+        if(record.getPrescriptions().isEmpty()){
             System.out.println("There are no prescriptions available to update.");
             return;
         }
@@ -101,20 +101,10 @@ public class PharmacistView extends DashboardView{
             System.out.println(count + ". " + pescription.getMedicine().getName() + "  (" + prescription.getStatus() + ")");
             count++;
         }
-        choice = getChoice(1, record.getPrescriptions.length);
-        Prescription selectedPrescription = record.getPrescriptions.get(choice-1);
-
-        System.out.println("Please select status to be set: ");
-        count = 1;
-        for(PrescriptionStatus status : PrescriptionStatus.values()){
-            System.out.println(count + ". " + status);
-            count++;
-        }
-        choice = getChoice(1, Prescriptionstatus.values().length);
-        PrescriptionStatus selectedStatus = PrescriptionStatus.values()[choice-1];
+        choice = getChoice(1, record.getPrescriptions().length);
 
         try{
-            selectedPrescription.setStatus(selectedStatus);
+            PharmacistController.approvePrescriptionRequest(record.getAppointmentOutcomeRecordId(), choice-1);
             showSuccess("Prescription status updated successfuly.");
         } catch(Exception e){
             showError(e.getMessage());
@@ -128,7 +118,7 @@ public class PharmacistView extends DashboardView{
         System.out.println("--------------------");
         count = 1;
         for(Medicine medicine : medicineInventory){
-            System.out.println(count + ". " + medicine.getName() + "     Stock: " + medicine.getStock());
+            System.out.println(count + ". " + medicine.getName() + "     Low stock threshold: " + medicine.getLowStockThreshold() + "     Stock: " + medicine.getStock());
             count++;
         }
         System.out.println();
@@ -153,7 +143,7 @@ public class PharmacistView extends DashboardView{
         Medicine selectedMedicine = medicineInventory.get(choice-1);
 
         try{
-            selectedMedicine.setIsRequestingReplenishment(true);
+            PharmacistController.submitReplenishmentRequest(selectedMedicine.getMedicineId());
             showSuccess("Request sent successfully.");
         }catch (Exception e){
             showError(e.getMessage());
