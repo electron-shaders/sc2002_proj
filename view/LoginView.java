@@ -115,7 +115,7 @@ public class LoginView implements IView{
                 PatientView patientView = new PatientView(user);
                 patientView.launch();
                 break;
-            case DOCTOR:
+            case UserRole.DOCTOR:
                 DoctorView doctorView = new DoctorView(user);
                 doctorView.launch();
                 break;
