@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import store.AppointmentOutcomeRecordStore;
 import store.AppointmentStore;
@@ -16,7 +17,14 @@ public class PatientController {
         if (doctor == null) {
             throw new Exception("Doctor not found");
         }
-        return doctor.getAvailability();
+        Map<Date, Boolean> availability = doctor.getAvailability();
+        List<Date> availableSlots = new ArrayList<Date>();
+        for (Map.Entry<Date, Boolean> entry : availability.entrySet()) {
+            if (entry.getValue()) {
+                availableSlots.add(entry.getKey());
+            }
+        }
+        return availableSlots;
     }
 
     public static void scheduleAppointment(String patientId, String doctorId, Date date) {

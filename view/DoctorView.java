@@ -99,7 +99,7 @@ public class DoctorView extends DashboardView {
             System.out.println("There are no patients under your care so far.");
             List<String> tips = new ArrayList<String>();
             tips.add("Try adding some available time slots to your schedule to allow patients to book appointments with you.");
-            showTips(tips);
+            showUserTips(tips);
             return;
         }
 
@@ -193,7 +193,7 @@ public class DoctorView extends DashboardView {
             System.out.println("  (Empty)");
             List<String> tips = new ArrayList<String>();
             tips.add("Try adding some available time slots to your schedule first.");
-            showTips(tips);
+            showUserTips(tips);
             return;
         }
 
@@ -222,7 +222,7 @@ public class DoctorView extends DashboardView {
             System.out.println("You have no upcoming appointments.");
             List<String> tips = new ArrayList<String>();
             tips.add("Try adding some available time slots to your schedule to allow patients to book appointments with you.");
-            showTips(tips);
+            showUserTips(tips);
             return;
         }
 
