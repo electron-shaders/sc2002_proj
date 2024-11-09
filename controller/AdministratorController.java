@@ -13,7 +13,7 @@ public class AdministratorController {
             throw new Exception("Invalid Staff.");
         }
         else if(role == UserRole.DOCTIOR){
-            return DoctorStore.addRecord(user);
+            return DoctorStore.addRecord((Doctor)user);
         }
         else if(role == UserRole.PHARMACIST){
             return StaffStore.addRecord(user);
@@ -90,7 +90,7 @@ public class AdministratorController {
     }
     public void updateStaff(String userId, User user){
         if(user.getRole() == UserRole.DOCTOR){
-            DoctorStore.updateRecord(userId, user);
+            DoctorStore.updateRecord(userId, (Doctor)user);
         }
         else if(user.getRole() == UserRole.PHARMACIST){
             StaffStore.updateRecord(userId, user);
