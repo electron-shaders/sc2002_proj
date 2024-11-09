@@ -60,29 +60,29 @@ public class LoginView implements IView{
             
             //Get input for userID and password
             System.out.print  ("Enter user ID: ");
-            String userID = sc.nextLine();
+            String userId = sc.nextLine();
             System.out.print  ("Enter password: ");
             String password = sc.nextLine();
 
-            loginSuccess = authenticate(userRole, userID, password);
+            loginSuccess = authenticate(userRole, userId, password);
         }
         sc.close();
         navigateToDashboard(user);
     }
 
-    public boolean authenticate(UserRole userRole, String userID, String password){
+    public boolean authenticate(UserRole userRole, String userId, String password){
         switch(userRole){
             case PATIENT:
-            user = PatientStore.getRecord(userID);
+            user = PatientStore.getRecord(userId);
             break;
 
             case DOCTOR:
-            user = DoctorStore.getRecord(userID);
+            user = DoctorStore.getRecord(userId);
             break;
 
             case PHARMACIST:
             case ADMINISTRATOR:
-            user = StaffStore.getRecord(userID);
+            user = StaffStore.getRecord(userId);
             break;
 
             default:
@@ -112,8 +112,8 @@ public class LoginView implements IView{
     }
 
     public void navigateToDashboard(User user){
-        UserRole role = user.getRole();
-        switch(role){
+        userRole = user.getRole();
+        switch(userRole){
             case PATIENT:
             PatientView patientView = new PatientView(user);
             patientView.launch();
@@ -136,6 +136,8 @@ public class LoginView implements IView{
 
             default:
             showError("Unable to find role specific View class. Update to navigateToDashboard() in LoginView.java may be required.");
+            loginSuccess = false;
+            launch();
         }
     }
 }
