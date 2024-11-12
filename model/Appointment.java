@@ -9,14 +9,16 @@ public class Appointment {
     private Date date;
     private AppointmentStatus status;
     private String outcomeRecordId;
+    private boolean isRated;
 
-    public Appointment (String appointmentId, Patient patient, Doctor doctor, Date date, AppointmentStatus status, String outcomeRecordId) {
+    public Appointment (String appointmentId, Patient patient, Doctor doctor, Date date, AppointmentStatus status, String outcomeRecordId, Boolean isRated) {
         this.appointmentId = appointmentId;
         this.patient = patient;
         this.doctor = doctor;
         this.date = date;
         this.status = status;
         this.outcomeRecordId = outcomeRecordId;
+        this.isRated = isRated;
     }
 
     public String getAppointmentId() {
@@ -51,7 +53,12 @@ public class Appointment {
         this.outcomeRecordId = outcomeRecordId;
     }
 
-    public String getAppointmentDetails() {
-        return "Appointment ID: " + appointmentId + "\nPatient: " + patient + "\nDate: " + date + "\nStatus: " + status + "\nOutcome Record ID: " + outcomeRecordId;
+    public boolean getIsRated() {
+        return isRated;
     }
+
+    public void setIsRated(boolean isRated) {
+        this.isRated = isRated;
+    }
+    
 }

@@ -27,6 +27,10 @@ public class User {
         return userID;
     }
 
+    public void setUserId(String userId) {
+        this.userID = userId;
+    }
+
     public UserRole getRole() {
         return role;
     }
@@ -35,7 +39,7 @@ public class User {
         return name;
     }
 
-    public boolean isMale() {
+    public boolean getIsMale() {
         return isMale;
     }
 

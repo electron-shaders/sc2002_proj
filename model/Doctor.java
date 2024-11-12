@@ -10,13 +10,13 @@ public class Doctor extends User implements Comparable<Doctor> {
     private float rating;
     private HashMap<Date, Boolean> availability;
 
-    public Doctor(String userId, String password, UserRole role, String name, boolean isMale, int age, String email, String specialty, int ratingCount, float rating, HashMap<Date, Boolean> availability) {
+    public Doctor(String userId, String password, UserRole role, String name, boolean isMale, int age, String email, String specialty, int ratingCount, float rating) {
         // constructor logic
         super(userId, password, role, name, isMale, 0, email);
         this.specialty = specialty;
         this.ratingCount = ratingCount;
         this.rating = rating;
-        this.availability = availability;
+        this.availability = new HashMap<Date, Boolean>();
     }
 
     public int compareTo(Doctor o) {

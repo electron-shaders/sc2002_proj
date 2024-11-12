@@ -9,6 +9,14 @@ public class Prescription {
         this.status = status;
     }
 
+    public Medicine getMedicine() {
+        return medicine;
+    }
+
+    public PrescriptionStatus getStatus() {
+        return status;
+    }
+
     public void setStatus(PrescriptionStatus status) {
         this.status = status;
     }

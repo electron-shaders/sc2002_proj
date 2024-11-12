@@ -21,6 +21,10 @@ public class Medicine {
         return medicineId;
     }
 
+    public String setMedicineId(String medicineId) {
+        return this.medicineId = medicineId;
+    }
+
     public String getName() {
         return name;
     }
@@ -40,6 +44,7 @@ public class Medicine {
     public void setLowStockThreshold(int lowStockThreshold) {
         this.lowStockThreshold = lowStockThreshold;
     }
+    
 
     public boolean getIsRequestingReplenishment() {
         return isRequestingReplenishment;

@@ -34,8 +34,8 @@ public class AppointmentOutcomeRecord {
         return prescriptions;
     }
 
-    public void setPrescriptionStatus(List<Prescription> prescriptions) {
-        this.prescriptions = prescriptions;
+    public void setPrescriptionStatus(int Index, PrescriptionStatus status) {
+        prescriptions.get(Index).setStatus(status);
     }
 
     public String getNotes() {
