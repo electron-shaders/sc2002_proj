@@ -35,7 +35,7 @@ public class AppointmentOutcomeRecord {
     }
 
     public void setPrescriptionStatus(int idx, PrescriptionStatus status) {
-        prescriptions.get(Index).setStatus(status);
+        prescriptions.get(idx).setStatus(status);
     }
 
     public String getNotes() {
