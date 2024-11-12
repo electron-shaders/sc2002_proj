@@ -34,7 +34,7 @@ public class AppointmentOutcomeRecord {
         return prescriptions;
     }
 
-    public void setPrescriptionStatus(int Index, PrescriptionStatus status) {
+    public void setPrescriptionStatus(int idx, PrescriptionStatus status) {
         prescriptions.get(Index).setStatus(status);
     }
 
