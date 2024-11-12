@@ -8,7 +8,7 @@ public class Doctor extends User implements Comparable<Doctor> {
     private String specialty;
     private int ratingCount;
     private float rating;
-    private HashMap<Date, Boolean> availability;
+    private Map<Date, Boolean> availability;
 
     public Doctor(String userId, String password, UserRole role, String name, boolean isMale, int age, String email, String specialty, int ratingCount, float rating) {
         // constructor logic
