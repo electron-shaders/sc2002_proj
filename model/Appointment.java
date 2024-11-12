@@ -45,7 +45,7 @@ public class Appointment {
         this.status = newstatus;
     }
 
-    public String getoutcomeRecordId() {
+    public String getOutcomeRecordId() {
         return outcomeRecordId;
     }
 
