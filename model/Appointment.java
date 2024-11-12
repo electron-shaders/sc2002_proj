@@ -11,7 +11,7 @@ public class Appointment {
     private String outcomeRecordId;
     private boolean isRated;
 
-    public Appointment (String appointmentId, Patient patient, Doctor doctor, Date date, AppointmentStatus status, String outcomeRecordId, Boolean isRated) {
+    public Appointment (String appointmentId, Patient patient, Doctor doctor, Date date, AppointmentStatus status, String outcomeRecordId, boolean isRated) {
         this.appointmentId = appointmentId;
         this.patient = patient;
         this.doctor = doctor;
