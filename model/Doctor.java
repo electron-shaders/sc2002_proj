@@ -12,7 +12,7 @@ public class Doctor extends User implements Comparable<Doctor> {
 
     public Doctor(String userId, String password, UserRole role, String name, boolean isMale, int age, String email, String specialty, int ratingCount, float rating) {
         // constructor logic
-        super(userId, password, role, name, isMale, 0, email);
+        super(userId, password, role, name, isMale, age, email);
         this.specialty = specialty;
         this.ratingCount = ratingCount;
         this.rating = rating;
