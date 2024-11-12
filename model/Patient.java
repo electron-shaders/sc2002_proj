@@ -9,7 +9,7 @@ public class Patient extends User {
 
     public Patient(String userId, String password, UserRole role, String name, boolean isMale, String email, Date dateofBirth, String bloodType, MedicalRecord medicalRecord) {
         // constructor logic
-        // age is not needed as it can be calculated from date of birth
+        // age is not needed for patients
         super(userId, password, role, name, isMale, 0, email);
         this.dateofBirth = dateofBirth;
         this.bloodType = bloodType;
