@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalRecord {
@@ -7,11 +8,11 @@ public class MedicalRecord {
     private List<String> diagnoses;
     private List<String> treatments;
 
-    public MedicalRecord(List<String> prescriptions, List<String> diagnoses, List<String> treatments) {
-        // constructor logic
-        this.prescriptions = prescriptions;
-        this.diagnoses = diagnoses;
-        this.treatments = treatments;
+    // MedicalRecord is initialized with empty lists
+    public MedicalRecord() {
+        this.prescriptions = new ArrayList<String>();
+        this.diagnoses = new ArrayList<String>();
+        this.treatments = new ArrayList<String>();
     }
 
     public List<String> getPrescriptions () {

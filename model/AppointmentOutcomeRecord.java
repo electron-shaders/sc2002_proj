@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 public class AppointmentOutcomeRecord {
-    String appointmentOutcomeRecordId;
-    Date date;
-    String serviceType;
-    List<Prescription> prescriptions;
-    String notes;
+    private String appointmentOutcomeRecordId;
+    private Date date;
+    private String serviceType;
+    private List<Prescription> prescriptions;
+    private String notes;
 
     public AppointmentOutcomeRecord(String appointmentOutcomeRecordId, Date date, String serviceType, List<Prescription> prescriptions, String notes) {
         this.appointmentOutcomeRecordId = appointmentOutcomeRecordId;
@@ -22,6 +22,10 @@ public class AppointmentOutcomeRecord {
         return appointmentOutcomeRecordId;
     }
 
+    public void setAppointmentOutcomeRecordId(String appointmentOutcomeRecordId) {
+        this.appointmentOutcomeRecordId = appointmentOutcomeRecordId;
+    }
+    
     public Date getDate () {
         return date;
     }

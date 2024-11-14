@@ -25,6 +25,10 @@ public class Appointment {
         return appointmentId;
     }
 
+    public void setAppointmentId(String appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
     public Patient getPatient() {
         return patient;
     }
