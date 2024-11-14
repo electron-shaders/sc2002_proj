@@ -1,5 +1,5 @@
 package model;
 
-public enum UserRole{
-    PATIENT, DOCTOR, PHARMACIST, ADMINISTRATOR;
+public enum UserRole {
+    PATIENT, DOCTOR, PHARMACIST, ADMINISTRATOR
 }
