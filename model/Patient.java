@@ -20,6 +20,10 @@ public class Patient extends User {
         return dateofBirth;
     }
 
+    public void setDateOfBirth(Date dateofBirth) {
+        this.dateofBirth = dateofBirth;
+    }
+
     public String getBloodType() {
         return bloodType;
     }

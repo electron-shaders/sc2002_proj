@@ -5,9 +5,30 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.User;
+import observer.ISubscriber;
 
-abstract class DashboardView implements IView{
-    public void showNotifications(String[] notifications){
+public abstract class DashboardView implements IView, ISubscriber{
+    public int getChoice(int min, int max) {
+        int choice = 0;
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            try {
+                System.out.print("Please enter your choice (" + min + " - " + max + "): ");
+                choice = sc.nextInt();
+                if (choice >= min && choice <= max) {
+                    break;
+                }
+                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+                System.out.println();
+            } catch (InputMismatchException e) {
+                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+                System.out.println();
+            }
+        }
+        return choice;
+    }
+
+    public void showNotifications(List<String> notifications){
         System.out.println("------------------------------------------------------------------------------------------------------");
         System.out.println("NOTIFICATIONS: ");
         int count = 1;
@@ -15,13 +36,6 @@ abstract class DashboardView implements IView{
             System.out.println("(" + count + ") " + notification);
             count++;
         }
-        System.out.println("------------------------------------------------------------------------------------------------------");
-    }
-
-    public void showTutorial(String tutorial){
-        System.out.println("------------------------------------------------------------------------------------------------------");
-        System.out.println("TUTORIAL: ");
-        System.out.println(tutorial);
         System.out.println("------------------------------------------------------------------------------------------------------");
     }
 
@@ -77,6 +91,5 @@ abstract class DashboardView implements IView{
         }catch (Exception e){
             showError(e.getMessage());
         }
-        
     }
 }

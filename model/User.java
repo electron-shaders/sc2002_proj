@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Date;
-
 public class User {
     private String userID;
     private String password;
@@ -39,12 +37,24 @@ public class User {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public boolean getIsMale() {
         return isMale;
     }
 
+    public void setIsMale(boolean isMale) {
+        this.isMale = isMale;
+    }
+
     public int getAge() {
         return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getEmail() {

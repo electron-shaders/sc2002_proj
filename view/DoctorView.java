@@ -1,63 +1,67 @@
 package view;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import controller.DoctorController;
+import model.Appointment;
+import model.Doctor;
+import model.Medicine;
+import model.Patient;
+import model.Prescription;
+import model.PrescriptionStatus;
+import observer.Notification;
+import store.AppointmentStore;
 
 public class DoctorView extends DashboardView {
     private Doctor user;
+    private List<Notification> notifications;
 
     public DoctorView(Doctor user) {
         this.user = user;
+        this.notifications = new ArrayList<Notification>();
+        AppointmentStore.subscribe(this);
     }
 
-    private int getChoice(int min, int max) {
-        int choice = 0;
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            try {
-                System.out.print("Please enter your choice (" + min + " - " + max + "): ");
-                choice = sc.nextInt();
-                if (choice >= min && choice <= max) {
-                    break;
-                }
-                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
-                System.out.println();
-            } catch (InputMismatchException e) {
-                showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
-                System.out.println();
-            }
-        }
-        return choice;
+    public void update(Notification notification) {
+        notifications.add(notification);
     }
 
     public void launch() {
-        System.out.println("Welcome, Dr. " + user.getName());
-        System.out.println("What would you like to do?");
-        System.out.println("1. Show notifications");
-        System.out.println("2. View patient medical records");
-        System.out.println("3. Update patient medical records");
-        System.out.println("4. View your personal schedule");
-        System.out.println("5. Set your availability");
-        System.out.println("6. View your upcoming appointments");
-        System.out.println("7. Accept a appointment request");
-        System.out.println("8. Decline a appointment request");
-        System.out.println("9. Record appointment outcome");
-        System.out.println("10. Show tutorials");
-        System.out.println("11. Logout");
-        System.out.println();
-
         while(true) {
+            System.out.println("======================================================================================================");
+            System.out.println("|                                     HOSPITAL MANAGEMENT SYSTEM                                     |");
+            System.out.println("|                                               DOCTOR DASHBOARD                                     |");
+            System.out.println("======================================================================================================");
+            System.out.println("Welcome, Dr. " + user.getName());
+            System.out.println("What would you like to do?");
+            System.out.println("1. Show notifications");
+            System.out.println("2. View patient medical records");
+            System.out.println("3. Update patient medical records");
+            System.out.println("4. View your personal schedule");
+            System.out.println("5. Set your availability");
+            System.out.println("6. View your upcoming appointments");
+            System.out.println("7. Accept a appointment request");
+            System.out.println("8. Decline a appointment request");
+            System.out.println("9. Record appointment outcome");
+            System.out.println("10. Change password");
+            System.out.println("11. Logout");
+            System.out.println();
+
             int choice = getChoice(1, 11);
             switch (choice) {
                 case 1:
-                    showNotifications();
+                    List<String> notificationStrings = new ArrayList<String>();
+                    for (Notification notification : notifications) {
+                        notificationStrings.add(notification.toString());
+                    }
+                    showNotifications(notificationStrings);
+                    notifications.clear();
                     break;
                 case 2:
                     showPatientMedicalRecords();
@@ -84,7 +88,7 @@ public class DoctorView extends DashboardView {
                     showRecordAppointmentOutcomeForm();
                     break;
                 case 10:
-                    showTutorials();
+                    showChangePasswordForm(user);
                     break;
                 case 11:
                     user.logout();
@@ -94,7 +98,7 @@ public class DoctorView extends DashboardView {
     }
 
     public void showPatientMedicalRecords() {
-        List<Patient> patients = DoctorController.getPatientsUnderCare(user.getId());
+        List<Patient> patients = DoctorController.getPatientsUnderCare(user.getUserId());
         if (patients.isEmpty()) {
             System.out.println("There are no patients under your care so far.");
             List<String> tips = new ArrayList<String>();
@@ -103,12 +107,14 @@ public class DoctorView extends DashboardView {
             return;
         }
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        showSuccess();
         System.out.println("The medical records of patients under your care are as follows:");
         for (Patient patient : patients) {
-            System.out.println("Patient ID: " + patient.getId());
+            System.out.println("Patient ID: " + patient.getUserId());
             System.out.println("Name: " + patient.getName());
-            System.out.println("Date of Birth: " + patient.getDateOfBirth());
-            System.out.println("Gender: " + patient.getIsMale() ? "Male" : "Female");
+            System.out.println("Date of Birth: " + sdf.format(patient.getDateOfBirth()));
+            System.out.println("Gender: " + (patient.getIsMale() ? "Male" : "Female"));
             System.out.println("Email Address: " + patient.getEmail());
             System.out.println("Blood Type: " + patient.getBloodType());
             System.out.println("--------------------");
@@ -147,7 +153,7 @@ public class DoctorView extends DashboardView {
         System.out.println("1. Diagnosis");
         System.out.println("2. Prescription");
         System.out.println("3. Treatment plan");
-        System.out.println("4. Go back");
+        System.out.println("4. Quit");
 
         int choice = getChoice(1, 4);
         switch (choice) {
@@ -187,18 +193,20 @@ public class DoctorView extends DashboardView {
     }
 
     public void showSchedule() {
-        System.out.println("Your personal schedule is as follows:");
         Map<Date, Boolean> schedule = user.getAvailability();
         if (schedule.isEmpty()) {
-            System.out.println("  (Empty)");
+            System.out.println("You have not set your availability yet.");
             List<String> tips = new ArrayList<String>();
             tips.add("Try adding some available time slots to your schedule first.");
             showUserTips(tips);
             return;
         }
 
+        System.out.println("Your personal schedule is as follows:");
+        showSuccess();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         for (Map.Entry<Date, Boolean> entry : schedule.entrySet()) {
-            System.out.println(entry.getKey() + ": " + (entry.getValue() ? "Available" : "Unavailable"));
+            System.out.println(sdf.format(entry.getKey()) + ": " + (entry.getValue() ? "Available" : "Unavailable"));
         }
     }
 
@@ -207,9 +215,16 @@ public class DoctorView extends DashboardView {
         System.out.println("Please enter the date (dd/MM/yyyy): ");
         String dateString = sc.nextLine();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = sdf.parse(dateString);
+        Date date;
+        try {
+            date = sdf.parse(dateString);
+        } catch (ParseException e) {
+            showError(e.getMessage());
+            return;
+        }
         if (user.getAvailability().containsKey(date)) {
             showError("This date is already in your schedule.");
+            return;
         }
 
         user.addAvailability(date);
@@ -217,7 +232,7 @@ public class DoctorView extends DashboardView {
     }
 
     public void showUpcomingAppointments() {
-        List<Appointment> appointments = DoctorController.getUpcomingAppointments(user.getId());
+        List<Appointment> appointments = DoctorController.getUpcomingAppointments(user.getUserId());
         if (appointments.isEmpty()) {
             System.out.println("You have no upcoming appointments.");
             List<String> tips = new ArrayList<String>();
@@ -226,10 +241,13 @@ public class DoctorView extends DashboardView {
             return;
         }
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        showSuccess();
+        System.out.println("Your upcoming appointments are as follows:");
         for (Appointment appointment : appointments) {
-            System.out.println("Appointment ID: " + appointment.getId());
+            System.out.println("Appointment ID: " + appointment.getAppointmentId());
             System.out.println("Patient Name: " + appointment.getPatient().getName());
-            System.out.println("Date: " + appointment.getDate());
+            System.out.println("Date: " + sdf.format(appointment.getDate()));
             System.out.println("Status: " + appointment.getStatus());
             System.out.println();
         }
@@ -240,7 +258,7 @@ public class DoctorView extends DashboardView {
         System.out.println("Please enter the appointment ID:");
         String appointmentId = sc.nextLine();
         try {
-            DoctorController.acceptAppointment(user.getId(), appointmentId);
+            DoctorController.acceptAppointment(user.getUserId(), appointmentId);
             showSuccess("Appointment accepted successfully.");
         } catch (Exception e) {
             showError(e.getMessage());
@@ -252,7 +270,7 @@ public class DoctorView extends DashboardView {
         System.out.println("Please enter the appointment ID:");
         String appointmentId = sc.nextLine();
         try {
-            DoctorController.declineAppointment(user.getId(), appointmentId);
+            DoctorController.declineAppointment(user.getUserId(), appointmentId);
             showSuccess("Appointment declined successfully.");
         } catch (Exception e) {
             showError(e.getMessage());
@@ -283,7 +301,7 @@ public class DoctorView extends DashboardView {
         String notes = sc.nextLine();
 
         try {
-            DoctorController.recordAppointmentOutcome(user.getId(), appointmentId, serviceType, prescriptions, notes);
+            DoctorController.recordAppointmentOutcome(user.getUserId(), appointmentId, serviceType, prescriptions, notes);
             showSuccess("Appointment outcome recorded successfully.");
         } catch (Exception e) {
             showError(e.getMessage());

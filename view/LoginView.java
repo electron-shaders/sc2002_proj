@@ -3,20 +3,19 @@ package view;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import model.Doctor;
+import model.Patient;
+import model.User;
 import model.UserRole;
 import store.PatientStore;
 import store.DoctorStore;
 import store.StaffStore;
 
 public class LoginView implements IView{
-    private boolean loginSuccess;
-    User user;
-    UserRole userRole;
+    private User user;
 
     public LoginView(){
-        loginSuccess = false;
         user = null;
-        userRole = null;
     }
 
     private int getChoice(int min, int max) {
@@ -41,22 +40,26 @@ public class LoginView implements IView{
 
     public void launch(){
         Scanner sc = new Scanner(System.in);
-        System.out.println("======================================================================================================");
-        System.out.println("|                                     HOSPITAL MANAGEMENT SYSTEM                                     |");
-        System.out.println("|                                                LOGIN                                               |");
-        System.out.println("======================================================================================================");
+        while(true){
+            System.out.println("======================================================================================================");
+            System.out.println("|                                     HOSPITAL MANAGEMENT SYSTEM                                     |");
+            System.out.println("|                                                LOGIN                                               |");
+            System.out.println("======================================================================================================");
 
-        while(!loginSuccess){
             //Get input for userRole
             int numOfRoles = UserRole.values().length;
-            System.out.println("User roles:");
+            System.out.println("Please choose your user role:");
             int count = 1;
             for(UserRole role : UserRole.values()){
                 System.out.println(count + ". " + role);
                 count++;
             }
-            int choice = getChoice(1, numOfRoles);
-            userRole = UserRole.values()[choice-1];
+            System.out.println(count + ". Exit");
+            int choice = getChoice(1, numOfRoles + 1);
+            if(choice == numOfRoles + 1){
+                System.exit(0);
+            }
+            UserRole userRole = UserRole.values()[choice-1];
             
             //Get input for userID and password
             System.out.print  ("Enter user ID: ");
@@ -64,22 +67,21 @@ public class LoginView implements IView{
             System.out.print  ("Enter password: ");
             String password = sc.nextLine();
 
-            loginSuccess = authenticate(userRole, userId, password);
+            if (authenticate(userRole, userId, password))
+                navigateToDashboard(user);
         }
-        sc.close();
-        navigateToDashboard(user);
     }
 
     public boolean authenticate(UserRole userRole, String userId, String password){
         switch(userRole){
-            case UserRole.PATIENT:
+            case PATIENT:
                 user = PatientStore.getRecord(userId);
                 break;
-            case UserRole.DOCTOR:
+            case DOCTOR:
                 user = DoctorStore.getRecord(userId);
                 break;
-            case UserRole.PHARMACIST:
-            case UserRole.ADMINISTRATOR:
+            case PHARMACIST:
+            case ADMINISTRATOR:
                 user = StaffStore.getRecord(userId);
                 break;
             default:
@@ -109,28 +111,26 @@ public class LoginView implements IView{
     }
 
     public void navigateToDashboard(User user){
-        userRole = user.getRole();
+        UserRole userRole = user.getRole();
         switch(userRole){
-            case UserRole.PATIENT:
-                PatientView patientView = new PatientView(user);
+            case PATIENT:
+                PatientView patientView = new PatientView((Patient) user);
                 patientView.launch();
                 break;
-            case UserRole.DOCTOR:
-                DoctorView doctorView = new DoctorView(user);
+            case DOCTOR:
+                DoctorView doctorView = new DoctorView((Doctor) user);
                 doctorView.launch();
                 break;
-            case UserRole.PHARMACIST:
+            case PHARMACIST:
                 PharmacistView pharmacistView = new PharmacistView(user);
                 pharmacistView.launch();
                 break;
-            case UserRole.ADMINISTRATOR:
+            case ADMINISTRATOR:
                 AdministratorView administratorView = new AdministratorView(user);
                 administratorView.launch();
                 break;
             default:
                 showError("Unable to find role specific View class. Update to navigateToDashboard() in LoginView.java may be required.");
-                loginSuccess = false;
-                launch();
         }
     }
 }
