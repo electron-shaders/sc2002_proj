@@ -62,12 +62,6 @@ public class DoctorController {
         if (!appointment.getDoctor().getUserId().equals(doctorId) || appointment.getStatus() != AppointmentStatus.PENDING) {
             throw new Exception("Cannot accept appointment");
         }
-        Doctor doctor = appointment.getDoctor();
-        if (!doctor.isAvailable(appointment.getDate())) {
-            throw new Exception("Doctor not available on this date");
-        }
-
-        doctor.removeAvailability(appointment.getDate());
         appointment.setStatus(AppointmentStatus.CONFIRMED);
     }
 

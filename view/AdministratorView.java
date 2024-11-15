@@ -33,7 +33,14 @@ public class AdministratorView extends DashboardView {
 
     public void launch() {
         while(true) {
+            System.out.println("======================================================================================================");
+            System.out.println("|                                     HOSPITAL MANAGEMENT SYSTEM                                     |");
+            System.out.println("|                                        ADMINISTRATOR DASHBOARD                                     |");
+            System.out.println("======================================================================================================");
             System.out.println("Welcome, " + user.getName());
+            if (notifications.size() > 0) {
+                System.out.println("You have " + notifications.size() + " new notifications.");
+            }
             System.out.println("What would you like to do?");
             System.out.println("1. Show notifications");
             System.out.println("2. View staff");
@@ -153,6 +160,9 @@ public class AdministratorView extends DashboardView {
             System.out.println("Gender: " + (staff.getIsMale() ? "Male" : "Female"));
             System.out.println("Age: " + staff.getAge());
             System.out.println("Email: " + staff.getEmail());
+            if (staff.getRole() == UserRole.DOCTOR) {
+                System.out.println("Specialty: " + ((Doctor) staff).getSpecialty());
+            }
             System.out.println();
         }
     }
@@ -183,6 +193,9 @@ public class AdministratorView extends DashboardView {
             System.out.println("Gender: " + (staff.getIsMale() ? "Male" : "Female"));
             System.out.println("Age: " + staff.getAge());
             System.out.println("Email: " + staff.getEmail());
+            if (staff.getRole() == UserRole.DOCTOR) {
+                System.out.println("Specialty: " + ((Doctor) staff).getSpecialty());
+            }
             System.out.println();
         }
     }
@@ -225,6 +238,9 @@ public class AdministratorView extends DashboardView {
             System.out.println("Gender: " + (staff.getIsMale() ? "Male" : "Female"));
             System.out.println("Age: " + staff.getAge());
             System.out.println("Email: " + staff.getEmail());
+            if (staff.getRole() == UserRole.DOCTOR) {
+                System.out.println("Specialty: " + ((Doctor) staff).getSpecialty());
+            }
             System.out.println();
         }
     }
@@ -255,6 +271,9 @@ public class AdministratorView extends DashboardView {
             System.out.println("Gender: " + (staff.getIsMale() ? "Male" : "Female"));
             System.out.println("Age: " + staff.getAge());
             System.out.println("Email: " + staff.getEmail());
+            if (staff.getRole() == UserRole.DOCTOR) {
+                System.out.println("Specialty: " + ((Doctor) staff).getSpecialty());
+            }
             System.out.println();
         }
     }
@@ -315,7 +334,7 @@ public class AdministratorView extends DashboardView {
         int age = sc.nextInt();
 
         System.out.print("Email: ");
-        String email = sc.nextLine();
+        String email = sc.next();
 
         if (role == UserRole.PHARMACIST) {
             User user = new User(null, "password", role, name, isMale, age, email);
@@ -324,6 +343,7 @@ public class AdministratorView extends DashboardView {
             } catch (Exception e) {
                 showError(e.getMessage());
             }
+            showSuccess("Staff added successfully.");
             return;
         }
 
@@ -399,6 +419,7 @@ public class AdministratorView extends DashboardView {
             } catch (Exception e) {
                 showError(e.getMessage());
             }
+            showSuccess("Staff updated successfully.");
             return;
         }
 
@@ -493,7 +514,7 @@ public class AdministratorView extends DashboardView {
             System.out.println("Stock level: " + medicine.getStock());
             System.out.println("Low stock level alert line: " + medicine.getLowStockThreshold());
             System.out.println("Requesting replenishment: " + medicine.getIsRequestingReplenishment());
-            System.out.println("Price: " + medicine.getPrice());
+            System.out.println("Price: $" + medicine.getPrice());
             System.out.println();
         }
     }
@@ -519,7 +540,7 @@ public class AdministratorView extends DashboardView {
                 int stock = sc.nextInt();
                 System.out.print("Low stock level alert line: ");
                 int lowStockThreshold = sc.nextInt();
-                System.out.print("Price: ");
+                System.out.print("Price: $");
                 float price = sc.nextFloat();
                 Medicine medicine = new Medicine(null, name, stock, lowStockThreshold, false, price);
                 try {

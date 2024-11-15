@@ -71,7 +71,7 @@ public class AdministratorController {
         }
         List<User> StaffList = StaffStore.getRecords();
         for(User user : StaffList) {
-            if(user.getAge() == age){
+            if(user.getAge() == age && user.getRole() == UserRole.PHARMACIST){
                 Result.add(user);
             }
         }
@@ -87,7 +87,7 @@ public class AdministratorController {
         }
         List<User> StaffList = StaffStore.getRecords();
         for(User user : StaffList) {
-            if(user.getIsMale() == isMale){
+            if(user.getIsMale() == isMale && user.getRole() == UserRole.PHARMACIST){
                 Result.add(user);
             }
         }
@@ -97,13 +97,13 @@ public class AdministratorController {
         List<User> Result = new ArrayList<User>(); 
         List<User> DoctorList = new ArrayList<>(DoctorStore.getRecords());
         for(User user : DoctorList) {
-            if(name.equalsIgnoreCase(user.getName())){
+            if(user.getName().toLowerCase().contains(name.toLowerCase())){
                 Result.add(user);
             }
         }
         List<User> StaffList = StaffStore.getRecords();
         for(User user : StaffList) {
-            if(name.equalsIgnoreCase(user.getName())){
+            if(user.getName().toLowerCase().contains(name.toLowerCase()) && user.getRole() == UserRole.PHARMACIST){
                 Result.add(user);
             }
         }

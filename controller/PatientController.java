@@ -69,8 +69,8 @@ public class PatientController {
         }
         AppointmentStore.removeRecord(appointmentId);
 
-        doctor.removeAvailability(appointment.getDate());
-        doctor.addAvailability(newDate);
+        doctor.removeAvailability(newDate);
+        doctor.addAvailability(appointment.getDate());
         Appointment newAppointment = new Appointment(null, appointment.getPatient(), doctor, newDate, AppointmentStatus.PENDING, null, false);
         AppointmentStore.addRecord(newAppointment);
         return newAppointment;
@@ -141,8 +141,10 @@ public class PatientController {
     public static List<Doctor> searchDoctor(String specialization) {
         List<Doctor> doctorList = DoctorStore.getRecords();
         if (specialization == null || specialization.isEmpty()) {
+            Collections.sort(doctorList);
             return doctorList;
         }
+
         List<Doctor> filteredDoctors = new ArrayList<Doctor>();
         for (Doctor doctor : doctorList) {
             if (doctor.getSpecialty().equals(specialization)) {

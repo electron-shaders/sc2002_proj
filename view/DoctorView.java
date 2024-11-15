@@ -39,6 +39,9 @@ public class DoctorView extends DashboardView {
             System.out.println("|                                               DOCTOR DASHBOARD                                     |");
             System.out.println("======================================================================================================");
             System.out.println("Welcome, Dr. " + user.getName());
+            if (notifications.size() > 0) {
+                System.out.println("You have " + notifications.size() + " new notifications.");
+            }
             System.out.println("What would you like to do?");
             System.out.println("1. Show notifications");
             System.out.println("2. View patient medical records");
@@ -202,8 +205,8 @@ public class DoctorView extends DashboardView {
             return;
         }
 
-        System.out.println("Your personal schedule is as follows:");
         showSuccess();
+        System.out.println("Your personal schedule is as follows:");
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         for (Map.Entry<Date, Boolean> entry : schedule.entrySet()) {
             System.out.println(sdf.format(entry.getKey()) + ": " + (entry.getValue() ? "Available" : "Unavailable"));
@@ -246,7 +249,7 @@ public class DoctorView extends DashboardView {
         System.out.println("Your upcoming appointments are as follows:");
         for (Appointment appointment : appointments) {
             System.out.println("Appointment ID: " + appointment.getAppointmentId());
-            System.out.println("Patient Name: " + appointment.getPatient().getName());
+            System.out.println("Patient: " + appointment.getPatient().getName() + " (ID: " + appointment.getPatient().getUserId() + ")");
             System.out.println("Date: " + sdf.format(appointment.getDate()));
             System.out.println("Status: " + appointment.getStatus());
             System.out.println();

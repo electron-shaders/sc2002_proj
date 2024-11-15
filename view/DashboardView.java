@@ -21,6 +21,7 @@ public abstract class DashboardView implements IView, ISubscriber{
                 showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
                 System.out.println();
             } catch (InputMismatchException e) {
+                sc.nextLine();
                 showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
                 System.out.println();
             }

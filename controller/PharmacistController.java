@@ -36,7 +36,7 @@ public class PharmacistController {
     }
     public static void submitReplenishmentRequest(String medicinedId) throws Exception{
         Medicine medicine = MedicineStore.getRecord(medicinedId);
-        if(medicine != null && medicine.getStock() <= medicine.getLowStockThreshold()){
+        if(medicine != null && medicine.getStock() <= medicine.getLowStockThreshold() && !medicine.getIsRequestingReplenishment()){
             medicine.setIsRequestingReplenishment(true);
             return;
         }

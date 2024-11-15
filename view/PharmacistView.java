@@ -29,7 +29,14 @@ public class PharmacistView extends DashboardView{
 
     public void launch(){
         while(true) {
+            System.out.println("======================================================================================================");
+            System.out.println("|                                     HOSPITAL MANAGEMENT SYSTEM                                     |");
+            System.out.println("|                                           PHARMACIST DASHBOARD                                     |");
+            System.out.println("======================================================================================================");
             System.out.println("Welcome, " + user.getName());
+            if (notifications.size() > 0) {
+                System.out.println("You have " + notifications.size() + " new notifications.");
+            }
             System.out.println("What would you like to do?");
             System.out.println("1. Show notifications");
             System.out.println("2. View appointment outcome record");
@@ -128,7 +135,11 @@ public class PharmacistView extends DashboardView{
             System.out.println(count + ". " + prescription.getMedicine().getName() + "  (" + prescription.getStatus() + ")");
             count++;
         }
-        int choice = getChoice(1, record.getPrescriptions().size());
+        System.out.println(count + ". Quit");
+        int choice = getChoice(1, record.getPrescriptions().size() + 1);
+        if(choice == record.getPrescriptions().size() + 1){
+            return;
+        }
 
         try{
             PharmacistController.approvePrescriptionRequest(record.getAppointmentOutcomeRecordId(), choice-1);
@@ -146,7 +157,7 @@ public class PharmacistView extends DashboardView{
         System.out.println("--------------------");
         count = 1;
         for(Medicine medicine : medicineInventory){
-            System.out.println(count + ". " + medicine.getName() + "     Low stock threshold: " + medicine.getLowStockThreshold() + "     Stock: " + medicine.getStock());
+            System.out.println(count + ". " + medicine.getName() + "\t\tLow stock threshold: " + medicine.getLowStockThreshold() + "\t\tStock: " + medicine.getStock());
             count++;
         }
         System.out.println();
@@ -164,10 +175,14 @@ public class PharmacistView extends DashboardView{
         System.out.println("Please select the medicine for replenishment: ");
         count = 1;
         for(Medicine medicine : medicineInventory){
-            System.out.println(count + ". " + medicine.getName() + "     Stock: " + medicine.getStock());
+            System.out.println(count + ". " + medicine.getName() + "\t\tLow stock threshold: " + medicine.getLowStockThreshold() + "\t\tStock: " + medicine.getStock());
             count++;
         }
-        choice = getChoice(1, medicineInventory.size());
+        System.out.println(count + ". Quit");
+        choice = getChoice(1, medicineInventory.size() + 1);
+        if(choice == medicineInventory.size() + 1){
+            return;
+        }
         Medicine selectedMedicine = medicineInventory.get(choice-1);
 
         try{

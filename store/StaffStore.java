@@ -88,7 +88,18 @@ public class StaffStore {
     }
 
     public static void updateRecord(String id, User record) {
-        staff.put(id, record);
+        User oldRecord = staff.get(id);
+        if (oldRecord == null || record == null) {
+            return;
+        }
+        if (record.getName() != null) {
+            oldRecord.setName(record.getName());
+        }
+        oldRecord.setIsMale(record.getIsMale());
+        oldRecord.setAge(record.getAge());
+        if (record.getEmail() != null) {
+            oldRecord.updatePersonalInfo(record.getEmail());
+        }
     }
 
     public static List<User> getRecords() {

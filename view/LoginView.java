@@ -3,8 +3,6 @@ package view;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import model.Doctor;
-import model.Patient;
 import model.User;
 import model.UserRole;
 import store.PatientStore;
@@ -31,6 +29,7 @@ public class LoginView implements IView{
                 showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
                 System.out.println();
             } catch (InputMismatchException e) {
+                sc.nextLine();
                 showError("Invalid choice. Please enter a number between " + min + " and " + max + ".");
                 System.out.println();
             }
@@ -111,26 +110,7 @@ public class LoginView implements IView{
     }
 
     public void navigateToDashboard(User user){
-        UserRole userRole = user.getRole();
-        switch(userRole){
-            case PATIENT:
-                PatientView patientView = new PatientView((Patient) user);
-                patientView.launch();
-                break;
-            case DOCTOR:
-                DoctorView doctorView = new DoctorView((Doctor) user);
-                doctorView.launch();
-                break;
-            case PHARMACIST:
-                PharmacistView pharmacistView = new PharmacistView(user);
-                pharmacistView.launch();
-                break;
-            case ADMINISTRATOR:
-                AdministratorView administratorView = new AdministratorView(user);
-                administratorView.launch();
-                break;
-            default:
-                showError("Unable to find role specific View class. Update to navigateToDashboard() in LoginView.java may be required.");
-        }
+        DashboardView view = DashboardViewFactory.getDashboardView(user);
+        view.launch();
     }
 }

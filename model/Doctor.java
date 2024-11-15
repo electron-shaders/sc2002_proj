@@ -20,12 +20,13 @@ public class Doctor extends User implements Comparable<Doctor> {
     }
 
     public int compareTo(Doctor o) {
-        if (this.rating - o.rating == 0)
-            return 0;
-        else if (this.rating - o.rating > 0)
+        float diff = this.rating - o.rating;
+        if (diff > 0)
+            return -1;
+        else if (diff < 0)
             return 1;
         else
-            return -1;
+            return 0;
     }
 
     public String getSpecialty() {

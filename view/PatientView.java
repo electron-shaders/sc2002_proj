@@ -36,6 +36,9 @@ public class PatientView extends DashboardView {
             System.out.println("|                                              PATIENT DASHBOARD                                     |");
             System.out.println("======================================================================================================");
             System.out.println("Welcome, " + user.getName());
+            if (notifications.size() > 0) {
+                System.out.println("You have " + notifications.size() + " new notifications.");
+            }
             System.out.println("What would you like to do?");
             System.out.println("1. Show notifications");
             System.out.println("2. View my medical records");
@@ -325,6 +328,7 @@ public class PatientView extends DashboardView {
             System.out.println("Date: " + sdf.format(appointment.getDate()));
             System.out.println("Status: " + appointment.getStatus());
             if (appointment.getStatus() == AppointmentStatus.CANCELLED) {
+                System.out.println();
                 continue;
             }
 
@@ -336,6 +340,7 @@ public class PatientView extends DashboardView {
                 continue;
             }
 
+            System.out.println("Outcome record ID: " + outcomeRecord.getAppointmentOutcomeRecordId());
             System.out.println("Type of service: " + outcomeRecord.getServiceType());
             System.out.println("Prescribed medications: ");
             List<Prescription> prescriptions = outcomeRecord.getPrescriptions();
@@ -346,6 +351,7 @@ public class PatientView extends DashboardView {
                 System.out.println("   - " + prescription.getMedicine().getName() + " (" + prescription.getStatus() + ")");
             }
             System.out.println("Consultation notes: " + outcomeRecord.getNotes());
+            System.out.println();
         }
     }
 

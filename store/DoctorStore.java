@@ -76,7 +76,21 @@ public class DoctorStore {
     }
 
     public static void updateRecord(String id, Doctor record) {
-        doctors.put(id, record);
+        Doctor oldRecord = doctors.get(id);
+        if (oldRecord == null || record == null) {
+            return;
+        }
+        if (record.getName() != null) {
+            oldRecord.setName(record.getName());
+        }
+        oldRecord.setIsMale(record.getIsMale());
+        oldRecord.setAge(record.getAge());
+        if (record.getEmail() != null) {
+            oldRecord.updatePersonalInfo(record.getEmail());
+        }
+        if (record.getSpecialty() != null) {
+            oldRecord.setSpecialty(record.getSpecialty());
+        }
     }
 
     public static List<Doctor> getRecords() {

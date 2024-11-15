@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -42,8 +43,9 @@ public class Bill {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("========== Bill ==========\n");
-        sb.append("Date: ").append(getDate()).append("\n");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sb.append("======================= Bill =======================\n");
+        sb.append("Date: ").append(sdf.format(getDate())).append("\n");
         sb.append("Service Type: ").append(getServiceType()).append("\n");
         sb.append("Prescriptions:\n");
         List<Prescription> prescriptions = getPrescriptions();
@@ -53,11 +55,11 @@ public class Bill {
         for (Prescription prescription : prescriptions) {
             sb.append("  - ").append(prescription.getMedicine().getName()).append("\t$").append(prescription.getMedicine().getPrice()).append("\n");
         }
-        sb.append("Subtotal: $").append(getSubtotal()).append("\n");
-        sb.append("Due: $").append(getDue()).append("\n");
-        sb.append("==========================\n");
+        sb.append("Subtotal: $").append(String.format("%.2f", getSubtotal())).append("\n");
+        sb.append("Due: $").append(String.format("%.2f", getDue())).append("\n");
+        sb.append("====================================================\n");
         sb.append("Notes: Dispensed medications are excluded from the due amount.\n");
-        sb.append("==========================\n");
+        sb.append("====================================================\n");
         return sb.toString();
     }
 }
