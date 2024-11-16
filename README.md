@@ -21,6 +21,7 @@ The required initial data and third-party jar libraries are already included in 
 ├─.vscode
 ├─controller                // controller package
 ├─data                      // The initial data loaded into system
+├─html                      // The JavaDoc auto-generated HTML files
 ├─lib                       // Third-party jar libraries
 │  └─commons-csv-1.10.0
 ├─model                     // model package
