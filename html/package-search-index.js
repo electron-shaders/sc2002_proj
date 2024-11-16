@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"controller"},{"l":"model"},{"l":"observer"},{"l":"store"},{"l":"view"},{"l":"所有程序包","u":"allpackages-index.html"}];updateSearchResults();

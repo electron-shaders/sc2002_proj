@@ -17,7 +17,22 @@ import store.AppointmentStore;
 import store.DoctorStore;
 import store.PatientStore;
 
+/**
+ * The PatientController class provides Patient with methods for scheduling, rescheduling, and cancelling appointments,
+ * viewing scheduled and past appointments, searching for doctors, and printing bills and providing ratings for completed appointments.
+ * <p>
+ * It depends on Appointment, AppointmentOutcomeRecord, Bill, Doctor, Patient, AppointmentOutcomeRecordStore, AppointmentStore,
+ * DoctorStore, and PatientStore.
+ * </p>
+ */
 public class PatientController {
+    /**
+     * Gets the list of available appointment slots for the doctor with the specified user ID.
+     *
+     * @param doctorId the user ID of the doctor
+     * @return the list of available appointment slots for the doctor
+     * @throws Exception if the doctor is not found
+     */
     public static List<Date> getAppointmentSlots(String doctorId) throws Exception {
         Doctor doctor = DoctorStore.getRecord(doctorId);
         if (doctor == null) {
@@ -33,6 +48,15 @@ public class PatientController {
         return availableSlots;
     }
 
+    /**
+     * Schedules an appointment for a patient with a doctor on the specified date.
+     *
+     * @param patientId the user ID of the patient
+     * @param doctorId  the user ID of the doctor
+     * @param date      the date of the appointment
+     * @return the scheduled PENDING appointment
+     * @throws Exception if the patient is not found, the doctor is not found, or the doctor is not available on the specified date
+     */
     public static Appointment scheduleAppointment(String patientId, String doctorId, Date date) throws Exception {
         Patient patient = PatientStore.getRecord(patientId);
         if (patient == null) {
@@ -53,6 +77,15 @@ public class PatientController {
         return appointment;
     }
 
+    /**
+     * Reschedules an appointment for a patient to the new date.
+     *
+     * @param patientId     the user ID of the patient
+     * @param appointmentId the ID of the appointment
+     * @param newDate       the new date of the appointment
+     * @return the rescheduled PENDING appointment
+     * @throws Exception if the appointment is not found, the patient is not associated with the appointment, the appointment is not PENDING or CONFIRMED, or the doctor is not available on the new date
+     */
     public static Appointment rescheduleAppointment(String patientId, String appointmentId, Date newDate) throws Exception {
         Appointment appointment = AppointmentStore.getRecord(appointmentId);
         if (appointment == null) {
@@ -76,6 +109,13 @@ public class PatientController {
         return newAppointment;
     }
 
+    /**
+     * Cancels an appointment for a patient.
+     *
+     * @param patientId     the user ID of the patient
+     * @param appointmentId the ID of the appointment
+     * @throws Exception if the appointment is not found, the patient is not associated with the appointment, or the appointment is not PENDING or CONFIRMED
+     */
     public static void cancelAppointment(String patientId, String appointmentId) throws Exception {
         Appointment appointment = AppointmentStore.getRecord(appointmentId);
         if (appointment == null) {
@@ -90,6 +130,13 @@ public class PatientController {
         appointment.setStatus(AppointmentStatus.CANCELLED);
     }
 
+    /**
+     * Gets the list of scheduled PENDING or CONFIRMED appointments for a patient.
+     *
+     * @param patientId the user ID of the patient
+     * @return the list of scheduled appointments for the patient
+     * @throws Exception if the patient is not found
+     */
     public static List<Appointment> getScheduledAppointments(String patientId) throws Exception {
         Patient patient = PatientStore.getRecord(patientId);
         if (patient == null) {
@@ -107,6 +154,13 @@ public class PatientController {
         return patientAppointments;
     }
 
+    /**
+     * Gets the list of past COMPLETED or CANCELLED appointments for a patient.
+     *
+     * @param patientId the user ID of the patient
+     * @return the list of past appointments for the patient
+     * @throws Exception if the patient is not found
+     */
     public static List<Appointment> getPastAppointments(String patientId) throws Exception {
         Patient patient = PatientStore.getRecord(patientId);
         if (patient == null) {
@@ -124,6 +178,14 @@ public class PatientController {
         return patientAppointments;
     }
 
+    /**
+     * Gets the appointment outcome record for a patient's COMPLETED appointment.
+     *
+     * @param patientId     the user ID of the patient
+     * @param appointmentId the ID of the appointment
+     * @return the appointment outcome record for the appointment
+     * @throws Exception if the appointment is not found or the patient is not associated with the appointment
+     */
     public static AppointmentOutcomeRecord getAppointmentOutcomeRecord(String patientId, String appointmentId) throws Exception {
         Appointment appointment = AppointmentStore.getRecord(appointmentId);
         if (appointment == null || !appointment.getPatient().getUserId().equals(patientId)) {
@@ -138,6 +200,12 @@ public class PatientController {
         return AppointmentOutcomeRecordStore.getRecord(outcomeRecordId);
     }
 
+    /**
+     * Searches for doctors with the specified specialization.
+     *
+     * @param specialization the specialization of the doctors to search for
+     * @return the list of doctors with the specified specialization
+     */
     public static List<Doctor> searchDoctor(String specialization) {
         List<Doctor> doctorList = DoctorStore.getRecords();
         if (specialization == null || specialization.isEmpty()) {
@@ -156,6 +224,14 @@ public class PatientController {
         return filteredDoctors;
     }
 
+    /**
+     * Prints the bill for a patient's COMPLETED appointment.
+     *
+     * @param userId        the user ID of the patient
+     * @param appointmentId the ID of the appointment
+     * @return the printable bill for the appointment in String
+     * @throws Exception if the appointment is not found, the patient is not associated with the appointment, or the appointment is not COMPLETED
+     */
     public static String printBill(String userId, String appointmentId) throws Exception {
         Appointment appointment = AppointmentStore.getRecord(appointmentId);
         if (appointment == null || !appointment.getPatient().getUserId().equals(userId)) {
@@ -173,6 +249,14 @@ public class PatientController {
         return bill.toString();
     }
 
+    /**
+     * Provides the rating score for a patient's COMPLETED appointment.
+     *
+     * @param patientId     the user ID of the patient
+     * @param appointmentId the ID of the appointment
+     * @param rating        the rating score
+     * @throws Exception if the rating is not between 1 and 5, the appointment is not found, the patient is not associated with the appointment, or the appointment is not COMPLETED or has already been rated
+     */
     public static void provideRating(String patientId, String appointmentId, int rating) throws Exception {
         if (rating < 1 || rating > 5) {
             throw new Exception("Invalid rating, rating should be between 1 and 5");
