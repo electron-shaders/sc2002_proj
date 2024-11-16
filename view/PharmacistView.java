@@ -13,20 +13,59 @@ import observer.Notification;
 import store.AppointmentOutcomeRecordStore;
 import controller.PharmacistController;
 
+/**
+ * The PharmacistView class provides the user interface for the pharmacists.
+ * <p>
+ * It allows the pharmacist to view notifications, appointment outcome records, update prescription status, 
+ * view medication inventory, submit replenishment requests, and change password.
+ * </p>
+ */
 public class PharmacistView extends DashboardView{
+    /**
+     * The user associated with this PharmacistView.
+     */
     private User user;
+
+    /**
+     * The list of notifications received by the pharmacist.
+     */
     private List<Notification> notifications;
 
+    /**
+     * Constructor for the PharmacistView class.
+     * Initializes the notifications list and subscribes to the AppointmentOutcomeRecordStore.
+     *
+     * @param user The user associated with this PharmacistView.
+     */
     public PharmacistView(User user){
         this.user = user;
         this.notifications = new ArrayList<Notification>();
         AppointmentOutcomeRecordStore.subscribe(this);
     }
 
+    /**
+     * Implements the ISubscriber interface.
+     * Updates the list of notifications when receiving a new notification from subscribed publishers.
+     *
+     * @param notification The new notification to be added to the list.
+     */
     public void update(Notification notification){
         notifications.add(notification);
     }
 
+    /**
+     * Displays a menu with a set of actions that the pharmacist can choose from, including:
+     * <ol>
+     *  <li>Show notifications</li>
+     *  <li>View appointment outcome record</li>
+     *  <li>Update prescription status</li>
+     *  <li>View medication inventory</li>
+     *  <li>Submit replenishment request</li>
+     *  <li>Change password</li>
+     *  <li>Logout</li>
+     * </ol>
+     * The method runs in a while loop, i.e., it repeatedly displays the menu after the pharmacist completes an action until logout.
+     */
     public void launch(){
         while(true) {
             System.out.println("======================================================================================================");
@@ -78,6 +117,16 @@ public class PharmacistView extends DashboardView{
         }
     }
 
+    /**
+     * Displays the details of an appointment outcome record based on user input.
+     * <p>
+     * Prompts the pharmacist to enter the appointment outcome record ID, retrieves the outcome record
+     * using, and displays the record details including date, service type, notes, and prescriptions.
+     * </p>
+     * <p>
+     * If the record does not exist or an exception occurs during retrieval, an error message is displayed.
+     * </p>
+     */
     public void showAppointmentOutcomeRecord(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the appointment outcome record ID: ");
@@ -112,6 +161,14 @@ public class PharmacistView extends DashboardView{
         System.out.println();
     }
 
+    /**
+     * Displays a form to update the status of a prescription:
+     * <ol>
+     *  <li>Prompts the pharmacist to enter the appointment outcome record ID that need to dispense prescribed medications.</li>
+     *  <li>If there are no prescriptions available under the outcome record, it notifies the user and exits.</li>
+     *  <li>Otherwise, it lists the prescriptions and prompts the user to select one to dispense.</li>
+     * </ol>
+     */
     public void showUpdatePrescriptionStatusForm(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the appointment outcome record ID: ");
@@ -149,6 +206,9 @@ public class PharmacistView extends DashboardView{
         }
     }
 
+    /**
+     * Displays the medication inventory.
+     */
     public void showMedicationInventory(){
         int count;
         List<Medicine> medicineInventory = PharmacistController.getMedicineInventory();
@@ -163,6 +223,15 @@ public class PharmacistView extends DashboardView{
         System.out.println();
     }
 
+    /**
+     * Displays a form for submitting medication replenishment requests to the Administrator.
+     * <ol>
+     *  <li>Retrieves the current medicine inventory.</li>
+     *  <li>If the inventory is empty, it notifies the user and exits.</li>
+     *  <li>Otherwise, it lists the available medicines along with their low stock level alert lines and current stock levels.</li>
+     *  <li>Prompts the Pharmacist to select a medicine for replenishment.</li>
+     * </ol>
+     */
     public void showSubmitReplenishmentRequestForm(){
         int count, choice;
         List<Medicine> medicineInventory = PharmacistController.getMedicineInventory();

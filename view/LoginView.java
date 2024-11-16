@@ -9,13 +9,28 @@ import store.PatientStore;
 import store.DoctorStore;
 import store.StaffStore;
 
+/**
+ * The LoginView class provides the user interface for the login functionality of the Hospital Management System.
+ */
 public class LoginView implements IView{
+    /**
+     * The user information of the user who has successfully logged in.
+     */
     private User user;
 
-    public LoginView(){
-        user = null;
-    }
+    /**
+     * Constructs a new LoginView.
+     */
+    public LoginView() {}
 
+    /**
+     * Prompts the user to enter a choice within a specified range and returns the validated choice.
+     * Repeatedly prompts the user until a valid choice is entered.
+     *
+     * @param min The minimum valid choice (inclusive).
+     * @param max The maximum valid choice (inclusive).
+     * @return The user's validated choice as an integer.
+     */
     private int getChoice(int min, int max) {
         int choice = 0;
         Scanner sc = new Scanner(System.in);
@@ -37,6 +52,14 @@ public class LoginView implements IView{
         return choice;
     }
 
+    /**
+     * Launches the login view for the Hospital Management System.
+     * <p>
+     * This method displays a login interface where users can select their role,
+     * enter their user ID and password to authenticate themselves.
+     * If the authentication is successful, the user is navigated to their respective dashboard.
+     * </p>
+     */
     public void launch(){
         Scanner sc = new Scanner(System.in);
         while(true){
@@ -71,6 +94,14 @@ public class LoginView implements IView{
         }
     }
 
+    /**
+     * Authenticates a user based on inputted role, user ID, and password.
+     *
+     * @param userRole The inputted role (PATIENT, DOCTOR, PHARMACIST, ADMINISTRATOR).
+     * @param userId The inputted user ID.
+     * @param password The inputted password.
+     * @return true if the authentication is successful, false otherwise.
+     */
     public boolean authenticate(UserRole userRole, String userId, String password){
         switch(userRole){
             case PATIENT:
@@ -103,12 +134,22 @@ public class LoginView implements IView{
         return true;
     }
 
+    /**
+     * Displays an error message.
+     *
+     * @param message The error message to be displayed.
+     */
     public void showError(String message){
         System.out.println("------------------------------------------------------------------------------------------------------");
         System.out.println("[ERROR]: " + message);
         System.out.println("------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Navigates the user to the appropriate dashboard based on their role.
+     *
+     * @param user The user object to associate with the dashboard.
+     */
     public void navigateToDashboard(User user){
         DashboardView view = DashboardViewFactory.getDashboardView(user);
         view.launch();

@@ -16,19 +16,65 @@ import model.Patient;
 import model.Prescription;
 import observer.Notification;
 
+/**
+ * The PatientView class provides the user interface for patients.
+ * <p>
+ * It allows patients to view notifications, view their medical records, update their personal information, search for doctors by specialization,
+ * schedule, re-schedule and cancel appointments, view their scheduled appointments, view past appointment outcome records, provide ratings for
+ * past appointments, print bills for appointments, and change password.
+ * </p>
+ */
 public class PatientView extends DashboardView {
+    /**
+     * The user associated with this PatientView.
+     */
     private Patient user;
+
+    /**
+     * The list of notifications received by the patient.
+     */
     private List<Notification> notifications;
 
+    /**
+     * Constructor for the PatientView class.
+     * Initializes the notifications list
+     *
+     * @param user The user associated with this PatientView.
+     */
     public PatientView(Patient user) {
         this.user = user;
         this.notifications = new ArrayList<Notification>();
     }
 
+    /**
+     * Implements the ISubscriber interface.
+     * Updates the list of notifications when receiving a new notification from subscribed publishers.
+     *
+     * @param notification The new notification to be added to the list.
+     */
     public void update(Notification notification) {
         notifications.add(notification);
     }
 
+    /**
+     * Displays a menu with a set of actions that the patient can choose from, including:
+     * <ol>
+     *  <li>Show notifications</li>
+     *  <li>View my medical records</li>
+     *  <li>Update my personal information</li>
+     *  <li>Search for a doctor</li>
+     *  <li>Schedule an appointment</li>
+     *  <li>Reschedule an appointment</li>
+     *  <li>Cancel an appointment</li>
+     *  <li>View my scheduled appointments</li>
+     *  <li>View past appointment outcome records</li>
+     *  <li>Provide rating for a past appointment</li>
+     *  <li>Print bill for an appointment</li>
+     *  <li>Change password</li>
+     *  <li>Log out</li>
+     * </ol>
+     * The method runs in a while loop, i.e., it repeatedly displays the menu after the patient completes an action until logout.
+     */
     public void launch() {
         while(true) {
             System.out.println("======================================================================================================");
@@ -109,6 +155,13 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the medical record of the current patient.
+     * <p>
+     * The medical record includes the patient's ID, name, date of birth, gender, email, blood type,
+     * past diagnoses, past prescriptions, and past treatment plans.
+     * </p>
+     */
     public void showMedicalRecord() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         showSuccess();
@@ -145,6 +198,10 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form for the user to update their personal information.
+     * The user can choose to update their name, date of birth, or email address.
+     */
     public void showUpdatePersonalInfoForm() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Which personal information would you like to update?");
@@ -186,6 +243,11 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form for the patient to search for doctors by specialization, or to view all doctors
+     * if the patient chooses to leave the field blank.
+     * The list of doctors found will be displayed along with their details and appointment slots.
+     */
     public void showDoctorSearchForm() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the specialty of the doctor you are looking for: ");
@@ -212,6 +274,11 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the available appointment slots for a given doctor.
+     *
+     * @param doctorId The ID of the doctor whose appointment slots are to be displayed.
+     */
     public void showAppointmentSlots(String doctorId) {
         List<Date> dates;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -226,6 +293,10 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to schedule an appointment with a doctor.
+     * The patient will receive a notification when the status of the appointment changes.
+     */
     public void showScheduleAppointmentForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the ID of the doctor you would like to schedule an appointment with: ");
@@ -243,6 +314,10 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to re-schedule an appointment.
+     * The patient will receive a notification when the status of the appointment changes.
+     */
     public void showRescheduleAppointmentForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the ID of the appointment you would like to reschedule: ");
@@ -260,6 +335,9 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to cancel an appointment.
+     */
     public void showCancelAppointmentForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the ID of the appointment you would like to cancel: ");
@@ -272,6 +350,9 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the scheduled pending or confirmed appointments of the patient.
+     */
     public void showScheduledAppointments() {
         List<Appointment> appointments;
         try {
@@ -302,6 +383,11 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the past appointment outcome records of the patient.
+     * The outcome records include the type of service, prescribed medications, consultation notes, and the status of each prescription.
+     * The cancelled appointments will also be displayed but without the outcome records.
+     */
     public void showPastAppointmentOutcomeRecords() {
         List<Appointment> appointments;
         try {
@@ -355,6 +441,9 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form for the patient to provide a rating for a past completed appointment.
+     */
     public void showProvideRatingForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the ID of the appointment to rate: ");
@@ -369,6 +458,9 @@ public class PatientView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form for the patient to print the bill for a past completed appointment.
+     */
     public void showPrintBillForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the ID of the appointment to print bill: ");

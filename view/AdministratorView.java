@@ -17,20 +17,59 @@ import model.UserRole;
 import observer.Notification;
 import store.AppointmentStore;
 
+/**
+ * The AdministratorView class extends the DashboardView and provides the user interface for the administrator.
+ * It allows the administrator to manage hospital staff, view and manage medication inventory, approve replenishment requests,
+ * view appointment details, and handle notifications.
+ */
 public class AdministratorView extends DashboardView {
+    /**
+     * The user associated with this AdministratorView.
+     */
     private User user;
+
+    /**
+     * The list of notifications received by the administrator.
+     */
     private List<Notification> notifications;
 
+    /**
+     * Constructor for the AdministratorView class.
+     * Initializes the notifications list and subscribes to the AppointmentStore.
+     *
+     * @param user The user associated with this AdministratorView.
+     */
     public AdministratorView(User user) {
         this.user = user;
         this.notifications = new ArrayList<Notification>();
         AppointmentStore.subscribe(this);
     }
 
+    /**
+     * Implements the ISubscriber interface.
+     * Updates the list of notifications when receiving a new notification from subscribed publishers.
+     *
+     * @param notification The new notification to be added to the list.
+     */
     public void update(Notification notification) {
         notifications.add(notification);
     }
 
+    /**
+     * Displays a menu with a set of actions that the administrator can choose from, including:
+     * <ul>
+     *   <li>Show notifications</li>
+     *   <li>View staff</li>
+     *   <li>Manage staff</li>
+     *   <li>View appointment details</li>
+     *   <li>View medication inventory</li>
+     *   <li>Manage medication inventory</li>
+     *   <li>Approve replenishment request</li>
+     *   <li>Change password</li>
+     *   <li>Logout</li>
+     * </ul>
+     * The method runs in a while loop, i.e., it repeatedly displays the menu after the administrator completes an action until logout.
+     */
     public void launch() {
         while(true) {
             System.out.println("======================================================================================================");
@@ -90,6 +129,10 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a menu for filtering hospital staff members based on different criteria.
+     * The administrator can choose to filter by role, age, gender, or name.
+     */
     public void showHospitalStaff() {
         System.out.println("How would you like to filter the staff?");
         System.out.println("1. Filter by role");
@@ -117,6 +160,9 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a list of details of hospital staff members filtered by their role (Doctor or Pharmacist).
+     */
     public void showHospitalStaffByRole() {
         System.out.println("What role would you like to view?");
         System.out.println("1. Doctor");
@@ -167,6 +213,9 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a list of details of hospital staff members filtered by their ages.
+     */
     public void showHospitalStaffByAge() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the age: ");
@@ -200,6 +249,9 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a list of details of hospital staff members filtered by their genders.
+     */
     public void showHospitalStaffByGender() {
         System.out.println("What gender would you like to view?");
         System.out.println("1. Male");
@@ -245,6 +297,10 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a list of details of hospital staff members filtered by their names.
+     * The matching is case-insensitive.
+     */
     public void showHospitalStaffByName() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the name: ");
@@ -278,6 +334,11 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a menu for managing hospital staff.
+     * It provides options to add, update, or remove a staff member.
+     * Based on the administrator's choice, it navigates to the respective form.
+     */
     public void showManageHospitalStaffForm() {
         System.out.println("What would you like to do?");
         System.out.println("1. Add a new staff member");
@@ -301,6 +362,19 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to add a new staff member (Doctor or Pharmacist).
+     * 
+     * The administrator should provide the following details:
+     * <ul>
+     *  <li>Name</li>
+     *  <li>Gender (Male/Female)</li>
+     *  <li>Age</li>
+     *  <li>Email</li>
+     * </ul>
+     * 
+     * If the new staff member is Doctor, the administrator needs to specify the Specialty of the new doctor.
+     */
     public void showAddHospitalStaffForm() {
         System.out.println("What role would you like to add?");
         System.out.println("1. Doctor");
@@ -359,6 +433,19 @@ public class AdministratorView extends DashboardView {
         showSuccess("Staff added successfully.");
     }
 
+    /**
+     * Displays a form to update the details of a staff member (Doctor or Pharmacist).
+     * The administrator should provide the staff ID before updating.
+     * <br />
+     * The administrator can update the following details or skip updating them:
+     * <ul>
+     *  <li>Name</li>
+     *  <li>Gender</li>
+     *  <li>Age</li>
+     *  <li>Email</li>
+     *  <li>Specialty (Doctor only)</li>
+     * </ul>
+     */
     public void showUpdateHospitalStaffForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the staff ID: ");
@@ -438,6 +525,9 @@ public class AdministratorView extends DashboardView {
         showSuccess("Staff updated successfully.");
     }
 
+    /**
+     * Displays a form to remove a staff member by the staff ID
+     */
     public void showRemoveHospitalStaffForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the staff ID: ");
@@ -452,6 +542,9 @@ public class AdministratorView extends DashboardView {
         showSuccess("Staff removed successfully.");
     }
 
+    /**
+     * Displays the details of all appointments, including patient ID, doctor ID, status, date of appointment, and outcome record (if any).
+     */
     public void showAppointmentDetails() {
         List<Appointment> appointments = AdministratorController.getAppointments();
 
@@ -495,6 +588,11 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the medication inventory details, including the medication ID, name,
+     * stock level, low stock level alert line, whether replenishment is being requested,
+     * and the price of each medication.
+     */
     public void showMedicationInventory() {
         List<Medicine> medicines = AdministratorController.getMedicineInventory();
 
@@ -519,6 +617,11 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the form for managing the medication inventory.
+     * The administrator can choose to add a new medication, remove an existing medication,
+     * update the stock level or the low stock level alert line of a medication.
+     */
     public void showManageMedicationInventoryForm() {
         System.out.println("What would you like to do?");
         System.out.println("1. Add a new medication");
@@ -593,6 +696,9 @@ public class AdministratorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the form to approve a replenishment request for a medication by the medication ID.
+     */
     public void showApproveReplenishmentRequestForm() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the medication ID: ");

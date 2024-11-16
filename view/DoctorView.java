@@ -18,20 +18,63 @@ import model.PrescriptionStatus;
 import observer.Notification;
 import store.AppointmentStore;
 
+/**
+ * The DoctorView class provides the user interface for doctors.
+ * <p>
+ * It allows the doctor to view notifications, view and update patient medical records, view and set personal schedule,
+ * view upcoming appointments, accept or decline appointment requests, record appointment outcomes, and change password.
+ * </p>
+ */
 public class DoctorView extends DashboardView {
+    /**
+     * The user associated with this DoctorView.
+     */
     private Doctor user;
+
+    /**
+     * The list of notifications received by the doctor.
+     */
     private List<Notification> notifications;
 
+    /**
+     * Constructor for the DoctorView class.
+     * Initializes the notifications list and subscribes to the AppointmentStore.
+     *
+     * @param user The user associated with this DoctorView.
+     */
     public DoctorView(Doctor user) {
         this.user = user;
         this.notifications = new ArrayList<Notification>();
         AppointmentStore.subscribe(this);
     }
 
+    /**
+     * Implements the ISubscriber interface.
+     * Updates the list of notifications when receiving a new notification from subscribed publishers.
+     *
+     * @param notification The new notification to be added to the list.
+     */
     public void update(Notification notification) {
         notifications.add(notification);
     }
 
+    /**
+     * Displays a menu with a set of actions that the patient can choose from, including:
+     * <ol>
+     *  <li>Show notifications</li>
+     *  <li>View patient medical records</li>
+     *  <li>Update patient medical records</li>
+     *  <li>View personal schedule</li>
+     *  <li>Set availability</li>
+     *  <li>View upcoming appointments</li>
+     *  <li>Accept an appointment request</li>
+     *  <li>Decline an appointment request</li>
+     *  <li>Record appointment outcome</li>
+     *  <li>Change password</li>
+     *  <li>Logout</li>
+     * </ol>
+     * The method runs in a while loop, i.e., it repeatedly displays the menu after the doctor completes an action until logout.
+     */
     public void launch() {
         while(true) {
             System.out.println("======================================================================================================");
@@ -100,6 +143,10 @@ public class DoctorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the medical records of patients under the doctor's care,
+     * i.e., those who have an appointment with the doctor.
+     */
     public void showPatientMedicalRecords() {
         List<Patient> patients = DoctorController.getPatientsUnderCare(user.getUserId());
         if (patients.isEmpty()) {
@@ -148,6 +195,10 @@ public class DoctorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to update a patient's medical record.
+     * The doctor can choose to add a diagnosis, prescription, or treatment plan to the patient's medical record.
+     */
     public void showUpdatePatientMedicalRecordForm() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the patient ID:");
@@ -195,6 +246,9 @@ public class DoctorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays the doctor's schedule.
+     */
     public void showSchedule() {
         Map<Date, Boolean> schedule = user.getAvailability();
         if (schedule.isEmpty()) {
@@ -213,6 +267,10 @@ public class DoctorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form for the doctor to set their availability on a specific date
+     * so that patients can schedule appointments with the doctor.
+     */
     public void showSetAvailabilityForm() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the date (dd/MM/yyyy): ");
@@ -234,6 +292,9 @@ public class DoctorView extends DashboardView {
         showSuccess("Availability added successfully.");
     }
 
+    /**
+     * Displays the upcoming pending and accepted appointments for the doctor.
+     */
     public void showUpcomingAppointments() {
         List<Appointment> appointments = DoctorController.getUpcomingAppointments(user.getUserId());
         if (appointments.isEmpty()) {
@@ -256,6 +317,9 @@ public class DoctorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to accept an appointment.
+     */
     public void showAcceptAppointmentForm() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the appointment ID:");
@@ -268,6 +332,9 @@ public class DoctorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to decline an appointment.
+     */
     public void showDeclineAppointmentForm() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the appointment ID:");
@@ -280,6 +347,10 @@ public class DoctorView extends DashboardView {
         }
     }
 
+    /**
+     * Displays a form to record the outcome of an appointment,
+     * including the type of service provided, prescribed medicines, and consultation notes.
+     */
     public void showRecordAppointmentOutcomeForm() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the appointment ID:");
